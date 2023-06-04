@@ -1,88 +1,27 @@
 # Movie_Recommendation_System
-import numpy as np
-import pandas as pd
-import difflib
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
+The basic concept behind a movie recommendation system is quite simple. In particular, there are two main elements in every recommender system: users and items. The system generates movie predictions for its users, while items are the movies themselves.
+
+The primary goal of movie recommendation systems is to filter and predict only those movies that a corresponding user is most likely to want to watch. The ML algorithms for these recommendation systems use the data about this user from the system’s database. This data is used to predict the future behavior of the user concerned based on the information from the past.
+
+**How to Build a Movie Recommendation System?**
+
+Once we’ve discussed the basics of film recommendation engines in machine learning, we can move on to building an actual movie recommendation system. So, we need to build an engine that learns and recognizes patterns in a user’s viewing history before using these patterns to generate new recommendations. What’s required for this?
+
+Data. ML systems need data, so find and import the essential libraries with movie datasets that already have global ratings.
+Analysis. Create generic recommendations of top-rated movies from the existing dataset.
+Personalization. Get personalized ratings by providing your own movie scores.
+Strategy. Implement content-based or collaborative filtering strategy.
+Combination. Combine recommendation lists to get a reasonable estimate across the ratings. The combined dataset of movie ratings can now be used for either filtering model.
+In a nutshell, all it takes to build a movie recommendation engine is to analyze the data, build the recommendation system, and get recommendations. 
+
+A) Content-Based Movie Recommendation Systems
+Content-based methods are based on the similarity of movie attributes. Using this type of recommender system, if a user watches one movie, similar movies are recommended. For example, if a user watches a comedy movie starring Adam Sandler, the system will recommend them movies in the same genre or starring the same actor, or both. With this in mind, the input for building a content-based recommender system is movie attributes.
+
+B) Collaborative Filtering Movie Recommendation Systems
+With collaborative filtering, the system is based on past interactions between users and movies. With this in mind, the input for a collaborative filtering system is made up of past data of user interactions with the movies they watch.
+
+For example, if user A watches M1, M2, and M3, and user B watches M1, M3, M4, we recommend M1 and M3 to a similar user C. You can see how this looks in the figure below for clearer reference.
 
 
-movies_data = pd.read_csv('/content/movies.csv')
 
-movies_data.head()
-
-movies_data.shape
-
-selected_features=['genres','keywords','tagline','cast','director']
-print(selected_features)
-
-for feature in selected_features:
-  movies_data[feature]=movies_data[feature].fillna('')
-
-combined_features=movies_data['genres']+''+movies_data['keywords']+''+movies_data['tagline']+''+movies_data['cast']+''+movies_data['director']
-print(combined_features)
-
-vectorizer=TfidfVectorizer()
-
-
-feature_vectors=vectorizer.fit_transform(combined_features)
-
-print(feature_vectors)
-
-cosine similarity
-
-
-cosine_sim=cosine_similarity(feature_vectors)
-
-print(cosine_sim)
-
-cosine_sim.shape
-
-movie_name=input('enter your fav movie name:')
-
-
-list_of_all_titles=movies_data['original_title'].tolist()
-print(list_of_all_titles)
-
-find_close_match = difflib.get_close_matches(movie_name , list_of_all_titles)
-print(find_close_match)
-
-
-close_match=find_close_match[0]
-print(close_match)
-
-index_of_the_movie=int(movies_data[movies_data.original_title == close_match]['index'].values[0])
-print(index_of_the_movie)
-
-
-similarity_score = list(enumerate(cosine_sim[index_of_the_movie]))
-print(similarity_score)
-len(similarity_score)
-
- sorted_similiar_movies=sorted(similarity_score,key=lambda x:x[1],reverse=True)
- print(sorted_similiar_movies)
-
-print('movies suggested for you:\n')
-i=1
-for movie in sorted_similiar_movies:
-  index=movie[0]
-  title_from_index=movies_data[movies_data.index==index]['title'].values[0]
-  if (i<20):
-    print(i,'-',title_from_index)
-    i+=1
-
-movie_name=input('enter your fav movie name:')
-list_of_all_titles=movies_data['original_title'].tolist()
-find_close_match = difflib.get_close_matches(movie_name , list_of_all_titles)
-close_match=find_close_match[0]
-index_of_the_movie=int(movies_data[movies_data.original_title == close_match]['index'].values[0])
-similarity_score = list(enumerate(cosine_sim[index_of_the_movie]))
-sorted_similiar_movies=sorted(similarity_score,key=lambda x:x[1],reverse=True)
-print('movies suggested for you:\n')
-i=1
-for movie in sorted_similiar_movies:
-  index=movie[0]
-  title_from_index=movies_data[movies_data.index==index]['title'].values[0]
-  if (i<30):
-    print(i,'-',title_from_index)
-    i+=1
-
+This data is stored in a matrix called the user-movie interactions matrix, where the rows are the users and the columns are the movies.
